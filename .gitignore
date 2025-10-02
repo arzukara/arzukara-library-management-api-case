@@ -1,0 +1,86 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Keep example env file
+!.env.example
+
+# Testing
+coverage
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
+
+# Build Outputs
+.next/
+out/
+build
+dist
+
+# Prisma
+generated/
+
+# Database files (keep dev.db for development setup)
+# *.db
+*.db-journal
+# *.sqlite
+# *.sqlite3
+
+# Production/Personal databases
+prod.db
+production.db
+local.db
+personal.db
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime & Temp files
+*.log
+*.pid
+*.pid.lock
+*.tmp
+*.temp
+.nyc_output/
+coverage/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Package manager lock files (optional - keep if using npm)
+# yarn.lock
+# pnpm-lock.yaml
+
+# Misc
+*.pem
+logs/
+lib-cov
