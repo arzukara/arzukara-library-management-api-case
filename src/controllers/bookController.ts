@@ -44,36 +44,33 @@ export const getBook = async (
 ) => {
   const { bookId } = req.params;
   try {
-    const book = await prisma.book.findUnique({
-      where: { id: Number(bookId) },
-      include: {
-        borrows: {
-          include: {
-            user: true,
-          },
+    const [book, scoreStat] = await Promise.all([
+      prisma.book.findUnique({
+        where: { id: Number(bookId) },
+        select: {
+          id: true,
+          name: true,
         },
-      },
-    });
+      }),
+      prisma.borrow.aggregate({
+        where: { bookId: Number(bookId), userScore: { not: null } },
+        _avg: { userScore: true },
+        _count: { userScore: true },
+      }),
+    ]);
+
     if (!book) {
       const error = new Error("Book not found");
       (error as any).status = 404;
       return next(error);
     }
-    const avarageScore =
-      book.borrows
-        .filter((b: Borrow) => b.userScore !== null)
-        .reduce(
-          (acc: number, b: Borrow) => acc + (b.userScore || 0),
-          0
-        ) /
-      (book.borrows.filter((b: Borrow) => b.userScore !== null)
-        .length || 1);
 
-    // if no score return -1 as score
-    const score : string | number =
-      book.borrows.length === 0 ? -1 : (Math.round(avarageScore * 100) / 100).toString();
+    const score: string | number =
+      scoreStat._count.userScore === 0
+        ? -1
+        : (Math.round((scoreStat._avg.userScore || 0) * 100) / 100).toString();
 
-      const bookWithScore: BookWithScore = {
+    const bookWithScore: BookWithScore = {
       id: book.id,
       name: book.name,
       score: score,
