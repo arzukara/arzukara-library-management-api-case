@@ -17,12 +17,16 @@ model User {
   id        Int      @id @default(autoincrement())
   name      String
   borrows   Borrow[]
+
+  @@index([name])
 }
 
 model Book {
   id        Int      @id @default(autoincrement())
   name      String
   borrows   Borrow[]
+
+  @@index([name])
 }
 
 model Borrow {
@@ -34,4 +38,9 @@ model Borrow {
   userScore Int?
   borrowDate DateTime @default(now())
   returnDate DateTime?
+
+  @@index([bookId])
+  @@index([bookId, userScore])
+  @@index([userId])
+  @@index([bookId, returnDate])
 }
